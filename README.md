@@ -11,8 +11,10 @@
 1. 연습용 데이터를 통한 데이터 분석 과정 숙지
     
     [영화 데이터를 활용한 데이터 분석](https://www.notion.so/a796f613f041478eb7c22cb214602752)
+    - Data : https://dacon.io/competitions/open/235536/data 
     
     [타이타닉](https://www.notion.so/24c28f11256b418192578f2857e09a56)
+    - Data : https://dacon.io/competitions/open/235539/data
     
     위 두가지 교육 공모전을 각 1주에 2회씩 스터디를 진행할 예정
     
