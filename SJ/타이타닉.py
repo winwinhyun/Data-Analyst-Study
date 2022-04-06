@@ -25,6 +25,65 @@ info = train.info() # 결측치 확인할떄 사용
 
 describe = train.describe() # 데이터의 기술 통계량을 알아볼때 사용
 
+train = train.drop(['Name', 'Ticket'], axis = 1)
+test = test.drop(['Name', 'Ticket'], axis = 1)
+
+train.pivot_table(values = 'Age', index = 'Pclass', aggfunc = 'mean' )
+# 나이 결측치를 처리할때 pclass 기준으로 해도 될거 같다는 결론 도출
+
+train_age_null = train[train.Age.isnull()]
+# 결측치만 따로 빼서 저장
+
+
+train_firstclass = train_age_null[train_age_null['Pclass'] == 1]
+train_secondclass = train_age_null[train_age_null['Pclass'] == 2]
+train_thirdclass = train_age_null[train_age_null['Pclass'] == 3]
+
+train_firstclass = train_firstclass.fillna(value = '38')
+train_secondclass = train_secondclass.fillna(value ='30')
+train_thirdclass = train_thirdclass.fillna(value ='25')
+
+train_drop_na = train.dropna(subset = ['Age'])
+# 나이가 결측치인거 제거하고 저장
+
+train_concat = pd.concat([train_drop_na, train_firstclass, train_secondclass, train_thirdclass])
+# 4가지 데이터 프레임 병합
+
+train = train_concat
+train.info()
+# 나이가 아직 문자형이기 때문에 정수형으로 바꿔줘야함
+train = train.astype({'Age':'int'})
+# 이제 테스트 데이터도 똑같이 해준다.
+test_age_null = test[test.Age.isnull()]
+
+test_firstclass = test_age_null[test_age_null['Pclass'] == 1]
+test_secondclass = test_age_null[test_age_null['Pclass'] == 2]
+test_thirdclass = test_age_null[test_age_null['Pclass'] == 3]
+
+test_firstclass = test_firstclass.fillna(value = '38')
+test_secondclass = test_secondclass.fillna(value ='30')
+test_thirdclass = test_thirdclass.fillna(value ='25')
+# test셋은 평균을 구해보면 train셋이랑 다르게 나오는데 이거는 그냥 무시하는건지?
+
+test_drop_na = test.dropna(subset = ['Age'])
+test_concat = pd.concat([test_drop_na, test_firstclass, test_secondclass, test_thirdclass])
+test = test_concat
+test = test.astype({'Age':'int'})
+
+train.info()
+
+pclass_train_dummies = pd.get_dummies(train['Pclass'])
+pclass_test_dummies = pd.get_dummies(test['Pclass'])
+
+train.drop(['Pclass'], axis = 1, inplace = True)
+test.drop(['Pclass'], axis = 1, inplace = True)
+
+pclass_train_dummies.columns = ['First', 'Second', 'Third']
+pclass_test_dummies.columns = ['First', 'Second', 'Third']
+
+
+
+
 value_counts = train['Embarked'].value_counts() #각 시리즈마다 고유의 값 개수를 세줌
 
 groupby = train.groupby('Sex').mean() #성별로 묶어서 각각의 평균값 산출
