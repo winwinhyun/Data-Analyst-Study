@@ -133,7 +133,6 @@ test['Fare'].fillna(0,inplace = True)
 X_train = train.drop('Survived', axis = 1)
 Y_train = train['Survived']
 X_test = test.drop('PassengerId', axis = 1).copy()
-ㅋ
 X_test.info()
 
 # --------------------------------------------------------------- 
